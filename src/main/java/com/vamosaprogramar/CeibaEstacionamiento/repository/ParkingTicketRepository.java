@@ -6,10 +6,12 @@ import com.vamosaprogramar.CeibaEstacionamiento.entity.ParkingTicket;
 
 public interface ParkingTicketRepository {
 
-	public int countNumberConcurrentVehicles(String vehicleType);
+	public Integer countNumberConcurrentVehicles(String vehicleType);
 
 	public void addParkingTicket(ParkingTicket parkingTicket);
 
 	public List<ParkingTicket> getParkingTickets();
+
+	public ParkingTicket getParkingTicket(int id);
 
 }

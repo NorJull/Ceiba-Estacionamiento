@@ -1,5 +1,6 @@
 package com.vamosaprogramar.CeibaEstacionamiento.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vamosaprogramar.CeibaEstacionamiento.entity.ParkingTicket;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.EmptyPlateException;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberCarException;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberMotosException;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberVehiclesException;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.PlateStartsWithAException;
 import com.vamosaprogramar.CeibaEstacionamiento.service.ParkingTicketService;
 
 @RestController
@@ -21,51 +27,57 @@ public class ParkingTicketController {
 
 	@Autowired
 	private ParkingTicketService parkingTicketService;
-	
+
 	@GetMapping("{id}")
-	public ResponseEntity<ParkingTicket> getParkingTickect(@PathVariable int id){
-		
+	public ResponseEntity<ParkingTicket> getParkingTickect(@PathVariable int id) {
+
 		ParkingTicket parkingTicket = parkingTicketService.getParkingTicket(id);
 		
 		return new ResponseEntity<ParkingTicket>(parkingTicket, HttpStatus.OK);
-	
+
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<ParkingTicket>> getParkingTickects(){
-		
+	public ResponseEntity<List<ParkingTicket>> getParkingTickects() {
+
 		List<ParkingTicket> parkingTickets = parkingTicketService.getParkingTickets();
-		
+
 		return new ResponseEntity<List<ParkingTicket>>(parkingTickets, HttpStatus.OK);
-	
+
 	}
-	
-	
+
 	@PostMapping("/toRegisterEntry")
-	public ResponseEntity<String> toRegisterEntry(@RequestBody ParkingTicket parkingTicket){
+	public ResponseEntity<String> toRegisterEntry(@RequestBody ParkingTicket parkingTicket) {
+
 		try {
-			parkingTicketService.toRegisterEntry(parkingTicket);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		 return ResponseEntity.status(HttpStatus.OK)
-			        .body("The entry was registered");
-	} 
-	
-	@PostMapping("/toCheckOut")
-	public ResponseEntity<String> toCheckOut(@RequestBody ParkingTicket parkingTicket){
-		
-		try {
-			parkingTicketService.toCheckOut(parkingTicket);
 			
+			parkingTicketService.toRegisterEntry(parkingTicket);
+			
+		} catch (OverNumberVehiclesException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (PlateStartsWithAException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (EmptyPlateException e) {
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		 return ResponseEntity.status(HttpStatus.OK)
-			        .body("Checkout was done");
+
+		return ResponseEntity.status(HttpStatus.OK).body("The entry was registered");
 	}
-	
-	
+
+	@PostMapping("/toCheckOut")
+	public ResponseEntity<String> toCheckOut(@RequestBody ParkingTicket parkingTicket) {
+
+		try {
+			parkingTicketService.toCheckOut(parkingTicket);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body("Checkout was done");
+	}
+
 }

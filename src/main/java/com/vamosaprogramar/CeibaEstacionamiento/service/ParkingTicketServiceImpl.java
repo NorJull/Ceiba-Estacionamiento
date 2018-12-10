@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,35 +15,33 @@ import com.vamosaprogramar.CeibaEstacionamiento.entity.ParkingTicket;
 import com.vamosaprogramar.CeibaEstacionamiento.exception.EmptyPlateException;
 import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberCarException;
 import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberMotosException;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberVehiclesException;
 import com.vamosaprogramar.CeibaEstacionamiento.exception.PlateStartsWithAException;
 import com.vamosaprogramar.CeibaEstacionamiento.repository.ParkingTicketRepository;
+import com.vamosaprogramar.CeibaEstacionamiento.utility.ParkingTickectUtility;
 
 @Service
 public class ParkingTicketServiceImpl implements ParkingTicketService{
 
 	@Autowired
 	private ParkingTicketRepository parkingTicketRepository;
-
+	@Autowired
+	private ParkingTickectUtility parkingTickectUtility;
+	
 	@Override
 	public ParkingTicket getParkingTicket(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return parkingTicketRepository.getParkingTicket(id) ;
 	}
 
 	@Override
-	public void toRegisterEntry(ParkingTicket parkingTicket) throws OverNumberMotosException, OverNumberCarException, PlateStartsWithAException, EmptyPlateException {
-		
+	public void toRegisterEntry(ParkingTicket parkingTicket) throws OverNumberMotosException, OverNumberCarException, PlateStartsWithAException, EmptyPlateException, OverNumberVehiclesException {
+
 		//Valida el número de motos concurrentes
 		parkingTicket.getOptionalVehicleType()
-		.filter(x -> x.equals(GeneralConstants.MOTORCYCLE))
-		.filter(x -> {return parkingTicketRepository.countNumberConcurrentVehicles(x) < GeneralConstants.MAX_NUMBER_CONCURRENT_MOTO;})
-		.orElseThrow(OverNumberMotosException::new);
-		
-		//Valida el número de carros concurrentes
-		parkingTicket.getOptionalVehicleType()
-		.filter(x -> x.equals(GeneralConstants.CAR))
-		.filter(x -> {return parkingTicketRepository.countNumberConcurrentVehicles(x) < GeneralConstants.MAX_NUMBER_CONCURRENT_CAR;})
-		.orElseThrow(OverNumberCarException::new);
+		.filter(x -> parkingTickectUtility.validateNumberOfConcurrentVehicles(x, parkingTicketRepository.countNumberConcurrentVehicles(x)))
+		.orElseThrow(OverNumberVehiclesException::new);
+	
 		
 		//Valida que la placa no venga vacía
 		parkingTicket.getOptionalVehiclePlate()
@@ -50,12 +49,7 @@ public class ParkingTicketServiceImpl implements ParkingTicketService{
 		
 		//Valida placas que inician con 'A'
 		parkingTicket.getOptionalVehiclePlate()
-		.filter(x -> x.startsWith("A"))
-		.filter(x -> {
-			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-			return (dayOfWeek != DayOfWeek.SUNDAY) && (dayOfWeek != DayOfWeek.MONDAY); 
-			}
-				)
+		.filter(x -> parkingTickectUtility.validatePlateStartWithA(x))
 		.orElseThrow(PlateStartsWithAException::new);
 		
 		//Fijar fecha de entrada y estado inicial

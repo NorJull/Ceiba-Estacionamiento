@@ -11,7 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateConverter;
+
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -31,15 +32,15 @@ public class ParkingTicket {
 	private String vehiclePlate;
 
 	@Column(name = "vehicle_cylinder_capacity")
-	private String vehicleCylinderCapacity;
+	private double vehicleCylinderCapacity;
 
 	@Column(name = "start_date")
-	@Convert(converter = LocalDateConverter.class)
+	@Convert(converter = LocalDateTimeConverter.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDateTime startDate;
 
 	@Column(name = "finish_date")
-	@Convert(converter = LocalDateConverter.class)
+	@Convert(converter = LocalDateTimeConverter.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDateTime finishDate;
 
@@ -89,15 +90,15 @@ public class ParkingTicket {
 		this.vehiclePlate = vehiclePlate;
 	}
 
-	public Optional<String> getOptionalVehicleCylinderCapacity() {
+	public Optional<Double> getOptionalVehicleCylinderCapacity() {
 		return Optional.ofNullable(vehicleCylinderCapacity);
 	}
 
-	public String getVehicleCylinderCapacity() {
+	public double getVehicleCylinderCapacity() {
 		return vehicleCylinderCapacity;
 	}
 
-	public void setVehicleCylinderCapacity(String vehicleCylinderCapacity) {
+	public void setVehicleCylinderCapacity(double vehicleCylinderCapacity) {
 		this.vehicleCylinderCapacity = vehicleCylinderCapacity;
 	}
 
@@ -148,4 +149,12 @@ public class ParkingTicket {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "ParkingTicket [id=" + id + ", vehicleType=" + vehicleType + ", vehiclePlate=" + vehiclePlate
+				+ ", vehicleCylinderCapacity=" + vehicleCylinderCapacity + ", startDate=" + startDate + ", finishDate="
+				+ finishDate + ", total=" + total + ", status=" + status + "]";
+	}
+
+	
 }

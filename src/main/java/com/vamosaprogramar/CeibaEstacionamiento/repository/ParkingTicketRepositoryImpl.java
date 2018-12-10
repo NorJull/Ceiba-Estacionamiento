@@ -43,7 +43,7 @@ public class ParkingTicketRepositoryImpl implements ParkingTicketRepository {
 	}
 
 	@Override
-	public int countNumberConcurrentVehicles(String vehicleType) {
+	public Integer countNumberConcurrentVehicles(String vehicleType) {
 		Session session = null;
 
 		try {
@@ -54,10 +54,15 @@ public class ParkingTicketRepositoryImpl implements ParkingTicketRepository {
 					"Select count(*) from ParkingTicket where status = :status and vehicleType = :vehicleType");
 
 			theQuery.setParameter("vehicleType", vehicleType);
+			
 			theQuery.setParameter("status", GeneralConstants.TICKET_REGISTERED);
 
-			int numberConcurrentVehicles = (int) theQuery.uniqueResult();
-
+			System.out.println("Consulta # Carros: "+theQuery.uniqueResult());
+			
+			Integer numberConcurrentVehicles = ((Long) theQuery.uniqueResult()).intValue();
+			
+			System.out.println("Consulta # Carros(numberConcurrentVehicles): "+numberConcurrentVehicles);
+			
 			return numberConcurrentVehicles;
 
 		} catch (Exception e) {
@@ -88,6 +93,29 @@ public class ParkingTicketRepositoryImpl implements ParkingTicketRepository {
 			}
 		}
 
+	}
+
+	@Override
+	public ParkingTicket getParkingTicket(int id) {
+		Session session = null;
+		
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			
+			ParkingTicket parkingTicket = session.get(ParkingTicket.class, id);
+			
+			return parkingTicket;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		
+		return null;
 	}
 
 }
