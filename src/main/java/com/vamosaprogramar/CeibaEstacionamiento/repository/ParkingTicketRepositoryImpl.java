@@ -118,4 +118,26 @@ public class ParkingTicketRepositoryImpl implements ParkingTicketRepository {
 		return null;
 	}
 
+	@Override
+	public void toCheckOut(ParkingTicket parkingTicket) {
+		Session session = null;
+		
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			
+			session.update(parkingTicket);
+			
+			session.getTransaction().commit();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		
+	}
+
 }

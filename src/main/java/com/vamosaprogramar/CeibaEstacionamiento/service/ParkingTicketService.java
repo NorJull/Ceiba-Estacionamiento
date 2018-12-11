@@ -15,9 +15,10 @@ public interface ParkingTicketService {
 
 	public ParkingTicket getParkingTicket(int id);
 
-	public void toRegisterEntry(ParkingTicket parkingTicket) throws OverNumberMotosException, OverNumberCarException, PlateStartsWithAException, EmptyPlateException, OverNumberVehiclesException;
+	public void toRegisterEntry(ParkingTicket parkingTicket) throws  PlateStartsWithAException, EmptyPlateException, OverNumberVehiclesException;
 
 	public List<ParkingTicket> getParkingTickets();
 
-	public void toCheckOut(ParkingTicket parkingTicket);
+
+	public void toCheckOut(int parkingTicketId);
 }

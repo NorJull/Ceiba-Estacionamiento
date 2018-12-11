@@ -14,4 +14,6 @@ public interface ParkingTicketRepository {
 
 	public ParkingTicket getParkingTicket(int id);
 
+	public void toCheckOut(ParkingTicket parkingTicket);
+
 }

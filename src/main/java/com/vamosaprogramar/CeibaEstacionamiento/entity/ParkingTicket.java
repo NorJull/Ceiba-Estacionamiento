@@ -32,7 +32,7 @@ public class ParkingTicket {
 	private String vehiclePlate;
 
 	@Column(name = "vehicle_cylinder_capacity")
-	private double vehicleCylinderCapacity;
+	private int vehicleCylinderCapacity;
 
 	@Column(name = "start_date")
 	@Convert(converter = LocalDateTimeConverter.class)
@@ -90,7 +90,7 @@ public class ParkingTicket {
 		this.vehiclePlate = vehiclePlate;
 	}
 
-	public Optional<Double> getOptionalVehicleCylinderCapacity() {
+	public Optional<Integer> getOptionalVehicleCylinderCapacity() {
 		return Optional.ofNullable(vehicleCylinderCapacity);
 	}
 
@@ -98,7 +98,7 @@ public class ParkingTicket {
 		return vehicleCylinderCapacity;
 	}
 
-	public void setVehicleCylinderCapacity(double vehicleCylinderCapacity) {
+	public void setVehicleCylinderCapacity(int vehicleCylinderCapacity) {
 		this.vehicleCylinderCapacity = vehicleCylinderCapacity;
 	}
 

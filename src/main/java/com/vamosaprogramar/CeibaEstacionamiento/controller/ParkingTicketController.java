@@ -67,11 +67,11 @@ public class ParkingTicketController {
 		return ResponseEntity.status(HttpStatus.OK).body("The entry was registered");
 	}
 
-	@PostMapping("/toCheckOut")
-	public ResponseEntity<String> toCheckOut(@RequestBody ParkingTicket parkingTicket) {
+	@PostMapping("/toCheckOut/{id}")
+	public ResponseEntity<String> toCheckOut(@PathVariable int id) {
 
 		try {
-			parkingTicketService.toCheckOut(parkingTicket);
+			parkingTicketService.toCheckOut(id);
 
 		} catch (Exception e) {
 			e.printStackTrace();
