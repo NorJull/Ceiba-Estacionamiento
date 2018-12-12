@@ -1,5 +1,7 @@
 package com.vamosaprogramar.CeibaEstacionamiento.unit;
 
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MOTORCYCLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -17,11 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.mockito.Mockito.mock;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MOTORCYCLE;
 
 import com.vamosaprogramar.CeibaEstacionamiento.utility.ParkingTickectUtility;
+
+import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -227,7 +228,7 @@ public class ParkingTicketUtilityTest {
 		assertEquals(11000.0, actual,0.0);
 	}
 	
-/*	@Test
+	@Test
 	public void calculateTotalToPay_MotoWith10hoursAnd600Cyl_Then6000() {
 		
 		String vehicleType = MOTORCYCLE;
@@ -240,5 +241,5 @@ public class ParkingTicketUtilityTest {
 		System.out.println("::::::::::"+actual);
 		assertEquals(6000.0, actual,0.0);
 	}
-	*/
+	
 }

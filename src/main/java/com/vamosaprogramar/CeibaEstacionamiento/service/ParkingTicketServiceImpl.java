@@ -1,5 +1,15 @@
 package com.vamosaprogramar.CeibaEstacionamiento.service;
 
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR_DAY_VALUE;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR_HOUR_VALUE;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.HOURS_TO_BE_DAY;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MOTORCYCLE_DAY_VALUE;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MOTORCYCLE_HOUR_VALUE;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.TICKET_CHECKOUT_REGISTERED;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.TICKET_REGISTERED;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.VALUE_TO_PAY_EXCESSED_BY_CYLINDER;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,16 +29,6 @@ import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberVehiclesExce
 import com.vamosaprogramar.CeibaEstacionamiento.exception.PlateStartsWithAException;
 import com.vamosaprogramar.CeibaEstacionamiento.repository.ParkingTicketRepository;
 import com.vamosaprogramar.CeibaEstacionamiento.utility.ParkingTickectUtility;
-
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.TICKET_REGISTERED;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.TICKET_CHECKOUT_REGISTERED;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.VALUE_TO_PAY_EXCESSED_BY_CYLINDER;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.HOURS_TO_BE_DAY;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR_HOUR_VALUE;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR_DAY_VALUE;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MOTORCYCLE_DAY_VALUE;
-import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MOTORCYCLE_HOUR_VALUE;
 
 @Service
 public class ParkingTicketServiceImpl implements ParkingTicketService {

@@ -21,7 +21,7 @@ import com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants;
 public class ParkingTicketUtilityImpl implements ParkingTickectUtility {
 
 	private LocalDate localDate = LocalDate.now();
-	
+
 	@Override
 	public void setLocalDate(LocalDate localDate) {
 		this.localDate = localDate;
@@ -93,6 +93,9 @@ public class ParkingTicketUtilityImpl implements ParkingTickectUtility {
 
 			if (hours < HOURS_TO_BE_DAY) {
 				totalToPay = hours * CAR_HOUR_VALUE;
+
+			} else if (hours >= HOURS_TO_BE_DAY && hours <= 24) {
+				totalToPay = CAR_DAY_VALUE;
 			} else {
 				long days = hours / 24;
 				long hoursLeft = hours % 24;
@@ -107,31 +110,31 @@ public class ParkingTicketUtilityImpl implements ParkingTickectUtility {
 
 		} else {
 			// Camino para motos
-
 			// Las motos que tengan un cilindraje mayor a 500 CC pagan 2000 de mas al valor
 			// total.
 
 			if (validateMotoWithCylinderCapacityOver500(cylinderCapacity)) {
 				totalToPay = VALUE_TO_PAY_EXCESSED_BY_CYLINDER;
-				
-			
+
 			}
 
 			if (hours < HOURS_TO_BE_DAY) {
 				totalToPay = totalToPay + hours * MOTORCYCLE_HOUR_VALUE;
-				
+
+			} else if (hours >= HOURS_TO_BE_DAY && hours <= 24) {
+
+				totalToPay = totalToPay + MOTORCYCLE_DAY_VALUE ;
+
 			} else {
-				
-				System.out.println("3............."+totalToPay);
-				
+			
 				long days = hours / 24;
 				long hoursLeft = hours % 24;
-				
+
 				if (hoursLeft > HOURS_TO_BE_DAY) {
 					days++;
 					hoursLeft = hoursLeft - HOURS_TO_BE_DAY;
 				}
-				
+
 				totalToPay = totalToPay + (days * MOTORCYCLE_DAY_VALUE) + (hoursLeft * MOTORCYCLE_HOUR_VALUE);
 			}
 
