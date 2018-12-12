@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.mock;
@@ -24,6 +25,7 @@ import com.vamosaprogramar.CeibaEstacionamiento.utility.ParkingTickectUtility;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureTestDatabase
 public class ParkingTicketUtilityTest {
 
 	@Autowired
