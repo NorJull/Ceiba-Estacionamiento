@@ -20,6 +20,13 @@ import com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants;
 @Component
 public class ParkingTicketUtilityImpl implements ParkingTickectUtility {
 
+	private LocalDate localDate = LocalDate.now();
+	
+	@Override
+	public void setLocalDate(LocalDate localDate) {
+		this.localDate = localDate;
+	}
+
 	@Override
 	public boolean validateNumberOfConcurrentVehicles(String vehicleType, int numberConcurrentVehicles) {
 
@@ -39,7 +46,7 @@ public class ParkingTicketUtilityImpl implements ParkingTickectUtility {
 	@Override
 	public boolean validatePlateStartWithA(String vehiclePlate) {
 		if (vehiclePlate.startsWith("A")) {
-			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
+			DayOfWeek dayOfWeek = localDate.getDayOfWeek();
 
 			if (dayOfWeek == DayOfWeek.SUNDAY || dayOfWeek == DayOfWeek.MONDAY)
 				return true;
@@ -106,20 +113,26 @@ public class ParkingTicketUtilityImpl implements ParkingTickectUtility {
 
 			if (validateMotoWithCylinderCapacityOver500(cylinderCapacity)) {
 				totalToPay = VALUE_TO_PAY_EXCESSED_BY_CYLINDER;
+				
+			
 			}
 
 			if (hours < HOURS_TO_BE_DAY) {
 				totalToPay = totalToPay + hours * MOTORCYCLE_HOUR_VALUE;
+				
 			} else {
+				
+				System.out.println("3............."+totalToPay);
+				
 				long days = hours / 24;
 				long hoursLeft = hours % 24;
-
+				
 				if (hoursLeft > HOURS_TO_BE_DAY) {
 					days++;
 					hoursLeft = hoursLeft - HOURS_TO_BE_DAY;
 				}
-
-				totalToPay = (days * MOTORCYCLE_DAY_VALUE) + (hoursLeft * MOTORCYCLE_HOUR_VALUE);
+				
+				totalToPay = totalToPay + (days * MOTORCYCLE_DAY_VALUE) + (hoursLeft * MOTORCYCLE_HOUR_VALUE);
 			}
 
 		}

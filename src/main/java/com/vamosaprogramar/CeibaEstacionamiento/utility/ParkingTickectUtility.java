@@ -1,5 +1,6 @@
 package com.vamosaprogramar.CeibaEstacionamiento.utility;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface ParkingTickectUtility {
@@ -13,4 +14,6 @@ public interface ParkingTickectUtility {
 	double calculateTotalToPay(String vehicleType, long hours, int cylinderCapacity);
 
 	boolean validateMotoWithCylinderCapacityOver500(int vehicleCylinderCapacity);
+
+	void setLocalDate(LocalDate localDate);
 }
