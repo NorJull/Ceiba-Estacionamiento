@@ -1,23 +1,31 @@
 package com.vamosaprogramar.CeibaEstacionamiento.entity;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.PlateStartsWithAException;
 
 @Entity
 @Table(name = "parking_ticket")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class ParkingTicket {
 
 	@Id
@@ -32,7 +40,7 @@ public class ParkingTicket {
 	private String vehiclePlate;
 
 	@Column(name = "vehicle_cylinder_capacity")
-	private int vehicleCylinderCapacity;
+	protected int vehicleCylinderCapacity;
 
 	@Column(name = "start_date")
 	@Convert(converter = LocalDateTimeConverter.class)
@@ -53,7 +61,25 @@ public class ParkingTicket {
 	public ParkingTicket() {
 
 	}
+	
+	public boolean validateConcurrentVehicles(int numberConcurrentVehicles) {
+		return true;
+	}
+	
+	public void validateVehiclePlate() throws PlateStartsWithAException {
+		if (vehiclePlate.startsWith("A")) {
+			DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 
+			if (!(dayOfWeek == DayOfWeek.SUNDAY || dayOfWeek == DayOfWeek.MONDAY))
+				throw new PlateStartsWithAException();
+
+		}
+	}
+
+	public double calculateTotalToPay(long hours) {
+		
+		return 0.0;
+	}
 	public Optional<Integer> getOptionalId() {
 		return Optional.ofNullable(id);
 	}
@@ -94,7 +120,7 @@ public class ParkingTicket {
 		return Optional.ofNullable(vehicleCylinderCapacity);
 	}
 
-	public double getVehicleCylinderCapacity() {
+	public int getVehicleCylinderCapacity() {
 		return vehicleCylinderCapacity;
 	}
 
