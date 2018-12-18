@@ -120,4 +120,28 @@ public class ParkingTicketDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((vehiclePlate == null) ? 0 : vehiclePlate.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ParkingTicketDTO other = (ParkingTicketDTO) obj;
+		if (vehiclePlate == null) {
+			if (other.vehiclePlate != null)
+				return false;
+		} else if (!vehiclePlate.equals(other.vehiclePlate))
+			return false;
+		return true;
+	}
+	
 }
