@@ -30,6 +30,7 @@ public class ParkingTicketController {
 	@GetMapping("{id}")
 	public ResponseEntity<ParkingTicketDTO> getParkingTickect(@PathVariable int id) {
 
+		System.out.println("Imprimir ID: "+id);
 		ParkingTicketDTO parkingTicketDTO = parkingTicketService.getParkingTicketDTO(id);
 		
 		return new ResponseEntity<ParkingTicketDTO>(parkingTicketDTO, HttpStatus.OK);
