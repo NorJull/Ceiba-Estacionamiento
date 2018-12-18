@@ -1,7 +1,6 @@
 package com.vamosaprogramar.CeibaEstacionamiento.unit;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,21 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+
+
+
+
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MAX_NUMBER_CONCURRENT_MOTO;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MOTORCYCLE;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.MAX_NUMBER_CONCURRENT_CAR;
+import static com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants.CAR;
 import com.vamosaprogramar.CeibaEstacionamiento.dto.ParkingTicketDTO;
+import com.vamosaprogramar.CeibaEstacionamiento.entity.CarParkingTicket;
+import com.vamosaprogramar.CeibaEstacionamiento.entity.MotorcycleParkingTicket;
 import com.vamosaprogramar.CeibaEstacionamiento.entity.ParkingTicket;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.EmptyPlateException;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.OverNumberVehiclesException;
+import com.vamosaprogramar.CeibaEstacionamiento.exception.PlateStartsWithAException;
 import com.vamosaprogramar.CeibaEstacionamiento.factory.ParkingTicketFactory;
 import com.vamosaprogramar.CeibaEstacionamiento.repository.ParkingTicketRepository;
 import com.vamosaprogramar.CeibaEstacionamiento.service.ParkingTicketService;
@@ -75,7 +87,7 @@ public class ParkingTicketServiceTest {
     	ParkingTicketDTO parkingTicketDTO = new ParkingTicketDTO();
     	
     	List<ParkingTicket> parkingTickets = new ArrayList<ParkingTicket>();
-;
+
     	
     	Mockito.when(parkingTicketRepository.getParkingTickets()).thenReturn(parkingTickets);
     	Mockito.when(parkingTicketFactory.createAParkingTicketDAOList(parkingTickets)).thenReturn(parkingTicketDTOs);
@@ -84,6 +96,41 @@ public class ParkingTicketServiceTest {
 
     	assertEquals(parkingTicketDTOs, actual);
     	
+    }
+    @Test(expected = OverNumberVehiclesException.class)
+    public void whenNumberOfCarsIsOverAllowed_thenThrowException() throws PlateStartsWithAException, EmptyPlateException, OverNumberVehiclesException {
+    	ParkingTicketDTO parkingTicketDTO = new ParkingTicketDTO();
+    	ParkingTicket parkingTicket = new CarParkingTicket();
+    	parkingTicket.setVehicleType(CAR);
+    	
+    	Mockito.when(parkingTicketFactory.createParkingTicket(parkingTicketDTO)).thenReturn(parkingTicket);
+    	Mockito.when(parkingTicketRepository.countNumberConcurrentVehicles(CAR)).thenReturn(MAX_NUMBER_CONCURRENT_CAR + 1);
+    	
+    	parkingTicketService.toRegisterEntry(parkingTicketDTO);
+    }
+    
+    @Test(expected = OverNumberVehiclesException.class)
+    public void whenNumberOfMotorcyclesIsOverAllowed_thenThrowException() throws PlateStartsWithAException, EmptyPlateException, OverNumberVehiclesException {
+    	ParkingTicketDTO parkingTicketDTO = new ParkingTicketDTO();
+    	ParkingTicket parkingTicket = new MotorcycleParkingTicket();
+    	parkingTicket.setVehicleType(MOTORCYCLE);
+    	
+    	Mockito.when(parkingTicketFactory.createParkingTicket(parkingTicketDTO)).thenReturn(parkingTicket);
+    	Mockito.when(parkingTicketRepository.countNumberConcurrentVehicles(MOTORCYCLE)).thenReturn(MAX_NUMBER_CONCURRENT_MOTO + 1);
+    	
+    	parkingTicketService.toRegisterEntry(parkingTicketDTO);
+    }
+    
+    @Test(expected = EmptyPlateException.class)
+    public void whenPlateIsEmpty_thenThrowException() throws PlateStartsWithAException, EmptyPlateException, OverNumberVehiclesException {
+    	ParkingTicketDTO parkingTicketDTO = new ParkingTicketDTO();
+    	ParkingTicket parkingTicket = new MotorcycleParkingTicket();
+    	parkingTicket.setVehicleType(MOTORCYCLE);
+    	
+    	Mockito.when(parkingTicketFactory.createParkingTicket(parkingTicketDTO)).thenReturn(parkingTicket);
+    	Mockito.when(parkingTicketRepository.countNumberConcurrentVehicles(MOTORCYCLE)).thenReturn(MAX_NUMBER_CONCURRENT_MOTO - 1);
+    	
+    	parkingTicketService.toRegisterEntry(parkingTicketDTO);
     }
     
 }
