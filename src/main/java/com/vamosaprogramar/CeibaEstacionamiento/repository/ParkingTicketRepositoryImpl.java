@@ -140,4 +140,32 @@ public class ParkingTicketRepositoryImpl implements ParkingTicketRepository {
 		
 	}
 
+	@Override
+	public List<ParkingTicket> getParkingTicketsByStatus(String status) {
+
+		Session session = null;
+
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			Query theQuery = session.createQuery("from ParkingTicket where status= :status");
+			
+			theQuery.setParameter("status", status);
+
+			List<ParkingTicket> parkingTickets = theQuery.list();
+
+			return parkingTickets;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+
+		return null;
+	}
+
 }

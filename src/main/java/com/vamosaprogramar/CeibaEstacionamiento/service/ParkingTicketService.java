@@ -19,4 +19,6 @@ public interface ParkingTicketService {
 
 
 	public ParkingTicketDTO toCheckOut(int parkingTicketId);
+
+	public List<ParkingTicketDTO> getCurrentParkingTicketDTOs();
 }

@@ -36,6 +36,17 @@ public class ParkingTicketController {
 		return new ResponseEntity<ParkingTicketDTO>(parkingTicketDTO, HttpStatus.OK);
 
 	}
+	
+
+	@GetMapping("/currents")
+	public ResponseEntity<List<ParkingTicketDTO>> getCurrentParkingTickects() {
+
+		List<ParkingTicketDTO> parkingTicketDTOs = parkingTicketService.getCurrentParkingTicketDTOs();
+
+	
+		return new ResponseEntity<List<ParkingTicketDTO>>(parkingTicketDTOs, HttpStatus.OK);
+
+	}
 
 	@GetMapping
 	public ResponseEntity<List<ParkingTicketDTO>> getParkingTickects() {

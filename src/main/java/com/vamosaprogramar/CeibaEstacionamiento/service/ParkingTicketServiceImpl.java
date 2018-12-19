@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vamosaprogramar.CeibaEstacionamiento.GeneralConstants;
 import com.vamosaprogramar.CeibaEstacionamiento.dto.ParkingTicketDTO;
 import com.vamosaprogramar.CeibaEstacionamiento.entity.ParkingTicket;
 import com.vamosaprogramar.CeibaEstacionamiento.exception.EmptyPlateException;
@@ -62,11 +63,7 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 
 	}
 
-	@Override
-	public List<ParkingTicketDTO> getparkingTicketDTOs() {
 
-		return parkingTicketFactory.createAParkingTicketDAOList(parkingTicketRepository.getParkingTickets());
-	}
 
 	@Override
 	public ParkingTicketDTO toCheckOut(int parkingTicketId) {
@@ -87,6 +84,17 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 
 		return parkingTicketFactory.createParkingTicketDTO(parkingTicket);
 
+	}
+	@Override
+	public List<ParkingTicketDTO> getparkingTicketDTOs() {
+
+		return parkingTicketFactory.createAParkingTicketDAOList(parkingTicketRepository.getParkingTickets());
+	}
+	
+	@Override
+	public List<ParkingTicketDTO> getCurrentParkingTicketDTOs() {
+		// TODO Auto-generated method stub
+		return parkingTicketFactory.createAParkingTicketDAOList(parkingTicketRepository.getParkingTicketsByStatus(GeneralConstants.TICKET_REGISTERED));
 	}
 
 }

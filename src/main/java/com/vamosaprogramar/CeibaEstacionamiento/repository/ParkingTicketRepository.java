@@ -16,4 +16,6 @@ public interface ParkingTicketRepository {
 
 	public void toCheckOut(ParkingTicket parkingTicket);
 
+	List<ParkingTicket> getParkingTicketsByStatus(String status);
+
 }
