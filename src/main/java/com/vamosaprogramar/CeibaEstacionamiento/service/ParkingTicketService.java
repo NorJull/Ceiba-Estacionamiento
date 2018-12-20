@@ -2,6 +2,7 @@ package com.vamosaprogramar.CeibaEstacionamiento.service;
 
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.vamosaprogramar.CeibaEstacionamiento.dto.ParkingTicketDTO;
@@ -21,4 +22,6 @@ public interface ParkingTicketService {
 	public ParkingTicketDTO toCheckOut(int parkingTicketId);
 
 	public List<ParkingTicketDTO> getCurrentParkingTicketDTOs();
+
+	void setLocalDateTime(LocalDateTime localDateTime);
 }

@@ -34,7 +34,7 @@ public class CarParkingTicket extends ParkingTicket {
 
 			if (hoursLeft > HOURS_TO_BE_DAY) {
 				days++;
-				hoursLeft = hoursLeft - HOURS_TO_BE_DAY;
+				hoursLeft = 0;
 			}
 
 			totalToPay = (days * CAR_DAY_VALUE) + (hoursLeft * CAR_HOUR_VALUE);

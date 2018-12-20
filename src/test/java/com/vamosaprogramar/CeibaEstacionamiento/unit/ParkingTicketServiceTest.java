@@ -1,9 +1,13 @@
 package com.vamosaprogramar.CeibaEstacionamiento.unit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.constraints.AssertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -133,4 +137,23 @@ public class ParkingTicketServiceTest {
     	parkingTicketService.toRegisterEntry(parkingTicketDTO);
     }
     
+    @Test
+    public void whenToCheckOut_thenReturnParkingTicketDTO() {
+    	ParkingTicket parkingTicket = new ParkingTicket();
+    	LocalDateTime startDate = LocalDateTime.of(2018, 12, 20, 12, 0);
+    	parkingTicket.setStartDate(startDate);
+    	
+    	LocalDateTime finishDate = startDate.plusHours(10);
+    	
+    	parkingTicketService.setLocalDateTime(finishDate);
+    	ParkingTicketDTO parkingTicketDTO = new ParkingTicketDTO();
+    	
+    	Mockito.when(parkingTicketRepository.getParkingTicket(1)).thenReturn(parkingTicket);
+    	Mockito.doNothing().when(parkingTicketRepository).toCheckOut(parkingTicket);
+    	Mockito.when(parkingTicketFactory.createParkingTicketDTO(parkingTicket)).thenReturn(parkingTicketDTO);
+    
+    	ParkingTicketDTO p = parkingTicketService.toCheckOut(1);
+    
+    	assertTrue(p instanceof ParkingTicketDTO);
+    }
 }

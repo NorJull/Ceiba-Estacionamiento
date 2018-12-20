@@ -30,6 +30,12 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 	@Autowired
 	private ParkingTicketFactory parkingTicketFactory;
 
+	private LocalDateTime localDateTime;
+	
+	public ParkingTicketServiceImpl() {
+		localDateTime = LocalDateTime.now();
+	}
+
 	@Override
 	public ParkingTicketDTO getParkingTicketDTO(int id) {
 
@@ -55,7 +61,7 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 		parkingTicket.validateVehiclePlate();
 
 		// Fijar fecha de entrada, estado inicial y el total
-		parkingTicket.setStartDate(LocalDateTime.now());
+		parkingTicket.setStartDate(localDateTime.now());
 		parkingTicket.setStatus(TICKET_REGISTERED);
 		parkingTicket.setTotal(0.0);
 
@@ -70,7 +76,7 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 
 		ParkingTicket parkingTicket = parkingTicketRepository.getParkingTicket(parkingTicketId);
 
-		LocalDateTime finishDate = LocalDateTime.now();
+		LocalDateTime finishDate = localDateTime.now();
 
 		long hours = parkingTickectUtility.hoursBetweenTwoDates(parkingTicket.getOptionalStartDate().get(), finishDate);
 
@@ -96,5 +102,11 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 		// TODO Auto-generated method stub
 		return parkingTicketFactory.createAParkingTicketDAOList(parkingTicketRepository.getParkingTicketsByStatus(GeneralConstants.TICKET_REGISTERED));
 	}
+
+	@Override
+	public void setLocalDateTime(LocalDateTime localDateTime) {
+		this.localDateTime = localDateTime;
+	}
+	
 
 }

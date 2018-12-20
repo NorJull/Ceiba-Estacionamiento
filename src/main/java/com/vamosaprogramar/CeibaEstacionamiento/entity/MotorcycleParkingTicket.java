@@ -47,7 +47,7 @@ public class MotorcycleParkingTicket extends ParkingTicket {
 
 			if (hoursLeft > HOURS_TO_BE_DAY) {
 				days++;
-				hoursLeft = hoursLeft - HOURS_TO_BE_DAY;
+				hoursLeft = 0;
 			}
 
 			totalToPay = totalToPay + (days * MOTORCYCLE_DAY_VALUE) + (hoursLeft * MOTORCYCLE_HOUR_VALUE);
